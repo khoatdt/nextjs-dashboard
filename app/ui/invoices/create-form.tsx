@@ -12,9 +12,10 @@ import { Button } from "@/app/ui/button";
 import { createInvoice, State } from "@/app/lib/actions";
 import { useActionState } from "react";
 
+
 export default function Form({ customers }: { customers: CustomerField[] }) {
   const initialState: State = {
-    message: null,
+    message: null, errors: {},
   };
   const [state, formAction] = useActionState(createInvoice, initialState);
 
@@ -129,6 +130,25 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             </div>
           </div>
         </fieldset>
+        {state.errors?.status ? (
+          <div id="status-error" aria-live="polite" 
+          className="mt-2 text-sm text-red-500">
+            {state.errors.status.map((error: string) => (
+              <p key={error}>{error}</p>
+            ))}
+          </div>
+        ) : null}
+        {state.message ? (
+          <div
+            id="status-error"
+            aria-live="polite"
+            className="mt-2 text-sm text-red-600"
+          >
+            <p key={state.message}>
+            {state.message}
+            </p>
+          </div>
+        ) : null}
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
